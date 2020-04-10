@@ -9,7 +9,7 @@ const Search = (props) => {
     const onSubmit = e => {
         e.preventDefault();
         if (!text) {
-            props.setAlert("ENTER SOMETHING", "light")
+            props.showAlert("ENTER SOMETHING", "light")
         } else {
             props.searchUsers(text);
             setText('');
@@ -36,7 +36,7 @@ const Search = (props) => {
 
 Search.propTypes = {
     searchUsers: PropTypes.func.isRequired,
-    setAlert: PropTypes.func.isRequired,
+    showAlert: PropTypes.func.isRequired,
 };
 
 export default Search;
