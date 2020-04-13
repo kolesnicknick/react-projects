@@ -1,14 +1,54 @@
-import { Request, Response } from "express";
+import {Request, Response} from "express";
 import * as HttpStatus from "http-status-codes";
+import * as bcrypt from "bcrypt";
+import * as jwt from 'jsonwebtoken';
+import {validationResult} from "express-validator";
+import User from "../models/User";
+import * as config from "../config/default.json";
 
-export const me = (_: Request, res: Response) => {
-    res.json({
-        user: "Niko",
-    });
+export const me = async (_: Request, res: Response) => {
+    try {
+        console.log(_.user);
+        const user = await User.findById(_.user).select('-password');
+        res.json(user);
+    } catch (e) {
+        console.log(e.message);
+        res.status(500).send('Server error');
+    }
 };
 
-export const login = (_: Request, res: Response) => {
-    res.json({
-        token: "Bearer 123213241231412231",
-    });
+export const login = async (_: Request, res: Response) => {
+    const errors = validationResult(_);
+    if (!errors.isEmpty()) {
+        res.status(HttpStatus.BAD_REQUEST).json(errors)
+    }
+
+    const {email, password} = _.body;
+
+    try {
+        let user = await User.findOne({email});
+
+        if (!user) {
+            return res.status(400).json({msg: 'Invalid credentials'});
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(400).json({msg: 'Invalid credentials 2'});
+        }
+
+        const payload = {
+            id: user.id
+        };
+
+        await jwt.sign(payload, config.secret, {
+            expiresIn: 36000
+        }, (err, token) => {
+            res.json({token});
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send('Server error occured');
+    }
 };
