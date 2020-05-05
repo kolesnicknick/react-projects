@@ -10,8 +10,9 @@ const NavBar = ({title, icon}) => {
             </h1>
             <ul>
                 <li><Link to='/'>Home</Link></li>
+                <li><Link to='/login'>Login</Link></li>
+                <li><Link to='/register'>Register</Link></li>
                 <li><Link to='/about'>About</Link></li>
-                <li><Link></Link></li>
             </ul>
         </div>
     );

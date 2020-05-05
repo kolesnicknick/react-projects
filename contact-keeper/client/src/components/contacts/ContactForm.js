@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import ContactContext from '../../context/contact/contactContext'
 
 const ContactForm = () => {
@@ -11,21 +11,39 @@ const ContactForm = () => {
         type: 'personal',
     });
 
+    useEffect(() => {
+        contactContext.current ? setContact(contactContext.current) : setContact({
+            name: '',
+            email: '',
+            phone: '',
+            type: 'personal',
+        });
+    }, [contactContext]);
+
+    const clearForm = () => {
+        contactContext.clearCurrent();
+    };
     const onChange = e => setContact({...contact, [e.target.name]: e.target.value});
+
     const onSubmit = e => {
         e.preventDefault();
-        contactContext.addContact(contact);
+        if (!contactContext.current) {
+            contactContext.addContact(contact);
+        } else {
+            contactContext.updateContact(contact)
+        }
         setContact({
             name: '',
             email: '',
             phone: '',
             type: 'personal',
         });
+        contactContext.clearCurrent()
     };
 
     return (
         <form onSubmit={onSubmit}>
-            <h2 className='text-primary'>Add contact</h2>
+            <h2 className='text-primary'>{contactContext.current ? 'Edit contact' : 'Add contact'}</h2>
             <input type='text'
                    placeholder='Name'
                    name='name'
@@ -47,13 +65,17 @@ const ContactForm = () => {
 
             <h5>Contact Type</h5>
             <input type='radio' name='type' value='personal'
-                   checked={contact.type==='personal'} onChange={onChange} /> Personal {''}
+                   checked={contact.type === 'personal'} onChange={onChange}/> Personal {''}
             <input type='radio' name='type' value='professional'
-                   checked={contact.type==='professional'} onChange={onChange} /> Professional
+                   checked={contact.type === 'professional'} onChange={onChange}/> Professional
             <div>
-                <input type='submit' value='Add contact' className='btn btn-primary btn-block'/>
+                <input type='submit' value={contactContext.current ? 'Edit contact' : 'Add contact'}
+                       className='btn btn-primary btn-block'/>
+                {contactContext.current &&
+                <input type='button' value='Clear' className='btn  btn-block' onClick={() => {
+                    clearForm()
+                }}/>}
             </div>
-                   
         </form>
     );
 };

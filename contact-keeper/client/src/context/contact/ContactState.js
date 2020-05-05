@@ -8,14 +8,14 @@ const ContactState = props => {
     const initialState = {
         contacts: [{
             id: 1,
-            name: "Niko Kole",
-            email: 'kolesniknikolai92@gmail.com',
+            name: "Anton Kozal",
+            email: 'insfsafdf@wix.com',
             phone: '+380997859700',
             type: 'personal'
         }, {
             id: 2,
-            name: "Niko Kole",
-            email: 'kolesniknikolai92@gmail.com',
+            name: "ASp Net",
+            email: 'sdf@fff.com',
             phone: '+380997859700',
             type: 'personal'
         }, {
@@ -31,7 +31,8 @@ const ContactState = props => {
             phone: '+380997859700',
             type: 'professional'
         },],
-        current: null
+        current: null,
+        filter: null,
     };
 
     const [state, dispatch] = useReducer(contactReducer, initialState);
@@ -54,25 +55,38 @@ const ContactState = props => {
     };
 
     //Clear current contact
-    const clearCurrent = contact => {
+    const clearCurrent = () => {
         dispatch({type: TYPES.CLEAR_CURRENT, payload: {}});
     };
 
     //Update contact
+    const updateContact = (contact) => {
+        dispatch({type: TYPES.UPDATE_CONTACT, payload: contact});
+    };
 
     //Filter contacts
+    const filterContacts = (params) => {
+        dispatch({type: TYPES.FILTER_CONTACTS, payload: params});
+    };
 
     //Clear filter
+    const clearFilter = () => {
+        dispatch({type: TYPES.CLEAR_FILTER, payload: {}});
+    };
 
     return (
         <ContactContext.Provider value={
             {
                 contacts: state.contacts,
                 current: state.current,
+                filter: state.filter,
                 addContact,
                 deleteContact,
                 clearCurrent,
-                setCurrent
+                setCurrent,
+                updateContact,
+                filterContacts,
+                clearFilter
             }
         }>{props.children}</ContactContext.Provider>);
 };
