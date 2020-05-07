@@ -3,10 +3,10 @@ import AuthContext           from './authContext';
 import authReducer           from './authReducer';
 import axios                 from 'axios';
 import {
-    AUTH_ERROR, CLEAR_ERRORS,
+    AUTH_ERROR, CLEAR_ERRORS, LOGIN_FAIL, LOGIN_SUCCESS,
     REGISTER_FAIL,
     REGISTER_SUCCESS, USER_LOADED
-}                            from '../types';
+} from '../types';
 import setAuthToken          from '../../utils/setAuthToken';
 
 const AuthState = props => {
@@ -65,9 +65,28 @@ const AuthState = props => {
     };
 
     //LOGIN USER
-    const login = () => {
-        console.log('hello');
-    };
+    const login = async (formData) => {
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        };
+
+        try {
+            const res = await axios.post('api/auth/login', formData, config);
+            console.log(res);
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: res.data
+            });
+
+            loadUser();
+        } catch (error) {
+            dispatch({
+                type: LOGIN_FAIL,
+                payload: error.response.data.msg
+            });
+        }    };
 
     //LOGOUT USER
     const logout = () => {

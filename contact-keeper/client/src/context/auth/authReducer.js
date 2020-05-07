@@ -9,6 +9,7 @@ export default (state, action) => {
                 isAuthenticated: true,
                 loading: false
             };
+        case TYPES.LOGIN_SUCCESS:
         case TYPES.REGISTER_SUCCESS:
             localStorage.setItem('token', action.payload.token);
             return {
@@ -17,6 +18,8 @@ export default (state, action) => {
                 isAuthenticated: true,
                 loading: false
             };
+        case TYPES.AUTH_ERROR:
+        case TYPES.LOGIN_FAIL:
         case TYPES.REGISTER_FAIL:
             return {
                 ...state,
@@ -26,8 +29,6 @@ export default (state, action) => {
                 user: null,
                 error: action.payload,
             };
-        case TYPES.AUTH_ERROR:
-
         case TYPES.CLEAR_ERRORS:
             return {
                 ...state,
