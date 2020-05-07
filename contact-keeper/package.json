@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node --inspect=5858 -r ts-node/register ./src/server.ts",
-    "start:watch": "nodemon",
+    "server": "nodemon",
     "client": "npm start --prefix client",
-    "clientinsta;;": "npm install --prefix client",
+    "clientinstall": "npm install --prefix client",
     "fullstack": "concurrently \"npm run server\" \"npm run client\"",
     "build": "tsc"
   },

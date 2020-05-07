@@ -1,8 +1,10 @@
-import React, {useContext, useState} from 'react';
-import AlertContext from '../../context/alert/alertContext'
+import React, { useContext, useEffect, useState } from 'react';
+import AlertContext                               from '../../context/alert/alertContext';
+import AuthContext                                from '../../context/auth/authContext';
 
-const Register = () => {
+const Register = (props) => {
     const alertContext = useContext(AlertContext);
+    const authContext = useContext(AuthContext);
 
     const [user, setUser] = useState({
         name: '',
@@ -11,18 +13,32 @@ const Register = () => {
         passwordConfirmation: ''
     });
 
-    const onChange = e => setUser({...user, [e.target.name]: e.target.value});
+    useEffect(() => {
+        if(authContext.isAuthenticated){
+            props.history.push('/');
+        }
+        if (authContext.error === 'User already exists') {
+            alertContext.setAlert(authContext.error, 'danger');
+        }
+        authContext.clearErrors();
+    }, [authContext.error, authContext.isAuthenticated, props.history]);
+
+    const onChange = e => setUser({ ...user, [e.target.name]: e.target.value });
 
     const onSubmit = e => {
         e.preventDefault();
 
         if (!user.name || !user.email || !user.password) {
             console.log('WHERE IT IS?');
-            alertContext.setAlert('Please fill in all fields', 'danger')
+            alertContext.setAlert('Please fill in all fields', 'danger');
         } else if (user.password !== user.passwordConfirmation) {
-            alertContext.setAlert('Passwords should be equal', 'danger')
+            alertContext.setAlert('Passwords should be equal', 'danger');
         } else {
-            console.log(user);
+            authContext.register({
+                name: user.name,
+                email: user.email,
+                password: user.password
+            });
         }
     };
 

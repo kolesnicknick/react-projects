@@ -1,4 +1,4 @@
 {
   "secret": "alakhamora",
-  "mongoURI": "mongodb+srv://adminiko:admin@contact-keeper-1wyiu.mongodb.net/test?retryWrites=true&w=majority"
+  "mongoURI": "mongodb+srv://adminiko:Password1@contact-keeper-1wyiu.mongodb.net/test?retryWrites=true&w=majority"
 }

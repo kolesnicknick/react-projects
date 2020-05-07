@@ -1,11 +1,11 @@
-import {Request, Response} from "express";
-import * as HttpStatus from "http-status-codes";
-import * as bcrypt from "bcrypt";
+import { Request, Response } from 'express';
+import * as HttpStatus from 'http-status-codes';
+import * as bcrypt from 'bcrypt';
 import * as config from '../config/default.json';
 import * as jwt from 'jsonwebtoken';
-import User, {IUser} from "../models/User"
+import User, { IUser } from '../models/User'
 
-import {validationResult} from "express-validator";
+import { validationResult } from 'express-validator';
 
 
 //@route    POST api/users/
@@ -23,9 +23,8 @@ export const register = async (_: Request, res: Response) => {
     try {
         let user = await User.findOne({email});
 
-        console.log('checking');
         if (user) {
-            return res.status(400).json({msg: "user exist"});
+            return res.status(400).json({msg: 'User already exists'});
         }
 
         user = new User({
