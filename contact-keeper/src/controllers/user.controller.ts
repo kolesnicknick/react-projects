@@ -3,7 +3,7 @@ import * as HttpStatus from 'http-status-codes';
 import * as bcrypt from 'bcrypt';
 import * as config from '../config/default.json';
 import * as jwt from 'jsonwebtoken';
-import User, { IUser } from '../models/User'
+import User, { IUser } from '../models/User';
 
 import { validationResult } from 'express-validator';
 
@@ -13,44 +13,45 @@ import { validationResult } from 'express-validator';
 //@access    Public
 export const register = async (_: Request, res: Response) => {
 
-    const errors = validationResult(_);
-    if (!errors.isEmpty()) {
-        res.status(HttpStatus.BAD_REQUEST).json(errors)
+  const errors = validationResult(_);
+  if (!errors.isEmpty()) {
+    res.status(HttpStatus.BAD_REQUEST).json(errors);
+  }
+
+  const { name, email, password } = _.body;
+
+  try {
+    let user = await User.findOne({ email });
+
+    if (user) {
+      return res.status(400).json({ msg: 'User already exists' });
     }
 
-    const {name, email, password} = _.body;
+    user = new User({
+      name,
+      email,
+      password
+    });
 
-    try {
-        let user = await User.findOne({email});
+    console.log('User created');
 
-        if (user) {
-            return res.status(400).json({msg: 'User already exists'});
-        }
+    user.password = await bcrypt.hash(password, 10);
 
-        user = new User({
-            name,
-            email,
-            password
-        });
+    const savedUser: IUser = await user.save();
 
-        console.log('User created');
+    const payload = {
+      id: user.id
+    };
 
-        user.password = await bcrypt.hash(password, 10);
+    await jwt.sign(payload, config.secret, {
+      expiresIn: 36000
+    }, (err, token) => {
+      res.json({ token });
+    });
 
-        const savedUser: IUser = await user.save();
-
-        const payload = {
-            id: user.id
-        };
-
-        await jwt.sign(payload, config.secret, {
-            expiresIn: 36000
-        }, (err, token) => {
-            res.json({token});
-        });
-
-    } catch (e) {
-        console.log(e);
-        res.status(500).send('Server error occured');
-    }
+  }
+  catch (e) {
+    console.log(e);
+    res.status(500).send('Server error occured');
+  }
 };

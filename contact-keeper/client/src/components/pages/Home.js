@@ -12,15 +12,15 @@ const Home = () => {
     }, []);
 
     return (
-        <div className='grid-2'>
-            <div>
-                <ContactForm/>
+            <div className='grid-2'>
+                <div>
+                    <ContactForm/>
+                </div>
+                <div>
+                    <FilterForm/>
+                    <Contacts/>
+                </div>
             </div>
-            <div>
-                <FilterForm/>
-                <Contacts/>
-            </div>
-        </div>
     );
 };
 

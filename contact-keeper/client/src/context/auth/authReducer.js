@@ -18,6 +18,7 @@ export default (state, action) => {
                 isAuthenticated: true,
                 loading: false
             };
+        case TYPES.LOGOUT:
         case TYPES.AUTH_ERROR:
         case TYPES.LOGIN_FAIL:
         case TYPES.REGISTER_FAIL:

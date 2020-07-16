@@ -3,10 +3,15 @@ import AuthContext           from './authContext';
 import authReducer           from './authReducer';
 import axios                 from 'axios';
 import {
-    AUTH_ERROR, CLEAR_ERRORS, LOGIN_FAIL, LOGIN_SUCCESS,
+    AUTH_ERROR,
+    CLEAR_ERRORS,
+    LOGIN_FAIL,
+    LOGIN_SUCCESS,
+    LOGOUT,
     REGISTER_FAIL,
-    REGISTER_SUCCESS, USER_LOADED
-} from '../types';
+    REGISTER_SUCCESS,
+    USER_LOADED
+}                            from '../types';
 import setAuthToken          from '../../utils/setAuthToken';
 
 const AuthState = props => {
@@ -21,7 +26,7 @@ const AuthState = props => {
 
     //LOAD USER
     const loadUser = async () => {
-            setAuthToken(localStorage.token);
+        setAuthToken(localStorage.token);
 
         try {
             const res = await axios.get('api/auth/me');
@@ -86,11 +91,12 @@ const AuthState = props => {
                 type: LOGIN_FAIL,
                 payload: error.response.data.msg
             });
-        }    };
+        }
+    };
 
     //LOGOUT USER
     const logout = () => {
-        console.log('hello');
+        dispatch({type: LOGOUT});
     };
 
 //CLEAR ERRORS
@@ -102,20 +108,20 @@ const AuthState = props => {
 
 
     return (
-        <AuthContext.Provider value={
-            {
-                token: state.token,
-                isAuthenticated: state.isAuthenticated,
-                loading: state.loading,
-                user: state.user,
-                error: state.error,
-                register,
-                loadUser,
-                login,
-                logout,
-                clearErrors
-            }
-        }>{props.children}</AuthContext.Provider>);
+            <AuthContext.Provider value={
+                {
+                    token: state.token,
+                    isAuthenticated: state.isAuthenticated,
+                    loading: state.loading,
+                    user: state.user,
+                    error: state.error,
+                    register,
+                    loadUser,
+                    login,
+                    logout,
+                    clearErrors
+                }
+            }>{props.children}</AuthContext.Provider>);
 };
 
 

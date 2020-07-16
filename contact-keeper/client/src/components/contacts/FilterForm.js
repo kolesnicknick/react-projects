@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useRef} from 'react';
-import ContactContext from '../../context/contact/contactContext'
+import React, { useContext, useEffect, useRef } from 'react';
+import ContactContext                           from '../../context/contact/contactContext';
 
 const FilterForm = () => {
     const contactContext = useContext(ContactContext);
@@ -9,23 +9,24 @@ const FilterForm = () => {
         } else {
             contactContext.clearFilter();
         }
-    };    const text = useRef('');
+    };
+    const text = useRef('');
     useEffect(() => {
-        if(!contactContext.filter){
+        if (!contactContext.filter) {
             text.current.value = null;
         }
     });
 
-        return (
+    return (
             <form>
                 <input
-                    ref={text}
-                    type='text'
-                    placeholder='Filter Contacts...'
-                    onChange={onChange}
+                        ref={text}
+                        type='text'
+                        placeholder='Filter Contacts...'
+                        onChange={onChange}
                 />
             </form>
-        );
+    );
 };
 
 export default FilterForm;

@@ -1,8 +1,8 @@
-import React, {useReducer} from 'react';
-import AlertContext from './alertContext';
-import alertReducer from './alertReducer'
-import * as uuid from 'uuid';
-import {REMOVE_ALERT, SET_ALERT} from "../types";
+import React, { useReducer }       from 'react';
+import AlertContext                from './alertContext';
+import alertReducer                from './alertReducer';
+import * as uuid                   from 'uuid';
+import { REMOVE_ALERT, SET_ALERT } from '../types';
 
 
 const AlertState = props => {
@@ -30,12 +30,12 @@ const AlertState = props => {
     };
 
     return (
-        <AlertContext.Provider value={
-            {
-                alerts: state,
-                setAlert,
-            }
-        }>{props.children}</AlertContext.Provider>);
+            <AlertContext.Provider value={
+                {
+                    alerts: state,
+                    setAlert,
+                }
+            }>{props.children}</AlertContext.Provider>);
 };
 
 export default AlertState;

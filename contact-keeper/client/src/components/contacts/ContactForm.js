@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
-import ContactContext from '../../context/contact/contactContext'
+import React, { useContext, useEffect, useState } from 'react';
+import ContactContext                             from '../../context/contact/contactContext';
 
 const ContactForm = () => {
     const contactContext = useContext(ContactContext);
@@ -30,7 +30,7 @@ const ContactForm = () => {
         if (!contactContext.current) {
             contactContext.addContact(contact);
         } else {
-            contactContext.updateContact(contact)
+            contactContext.updateContact(contact);
         }
         setContact({
             name: '',
@@ -38,45 +38,45 @@ const ContactForm = () => {
             phone: '',
             type: 'personal',
         });
-        contactContext.clearCurrent()
+        contactContext.clearCurrent();
     };
 
     return (
-        <form onSubmit={onSubmit}>
-            <h2 className='text-primary'>{contactContext.current ? 'Edit contact' : 'Add contact'}</h2>
-            <input type='text'
-                   placeholder='Name'
-                   name='name'
-                   value={contact.name}
-                   onChange={onChange}
-            />
-            <input type='text'
-                   placeholder='Email'
-                   name='email'
-                   value={contact.email}
-                   onChange={onChange}
-            />
-            <input type='text'
-                   placeholder='Phone'
-                   name='phone'
-                   value={contact.phone}
-                   onChange={onChange}
-            />
+            <form onSubmit={onSubmit}>
+                <h2 className='text-primary'>{contactContext.current ? 'Edit contact' : 'Add contact'}</h2>
+                <input type='text'
+                       placeholder='Name'
+                       name='name'
+                       value={contact.name}
+                       onChange={onChange}
+                />
+                <input type='text'
+                       placeholder='Email'
+                       name='email'
+                       value={contact.email}
+                       onChange={onChange}
+                />
+                <input type='text'
+                       placeholder='Phone'
+                       name='phone'
+                       value={contact.phone}
+                       onChange={onChange}
+                />
 
-            <h5>Contact Type</h5>
-            <input type='radio' name='type' value='personal'
-                   checked={contact.type === 'personal'} onChange={onChange}/> Personal {''}
-            <input type='radio' name='type' value='professional'
-                   checked={contact.type === 'professional'} onChange={onChange}/> Professional
-            <div>
-                <input type='submit' value={contactContext.current ? 'Edit contact' : 'Add contact'}
-                       className='btn btn-primary btn-block'/>
-                {contactContext.current &&
-                <input type='button' value='Clear' className='btn  btn-block' onClick={() => {
-                    clearForm()
-                }}/>}
-            </div>
-        </form>
+                <h5>Contact Type</h5>
+                <input type='radio' name='type' value='personal'
+                       checked={contact.type === 'personal'} onChange={onChange}/> Personal {''}
+                <input type='radio' name='type' value='professional'
+                       checked={contact.type === 'professional'} onChange={onChange}/> Professional
+                <div>
+                    <input type='submit' value={contactContext.current ? 'Edit contact' : 'Add contact'}
+                           className='btn btn-primary btn-block'/>
+                    {contactContext.current &&
+                    <input type='button' value='Clear' className='btn  btn-block' onClick={() => {
+                        clearForm();
+                    }}/>}
+                </div>
+            </form>
     );
 };
 
