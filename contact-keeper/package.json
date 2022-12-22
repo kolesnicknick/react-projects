@@ -21,7 +21,7 @@
     "express": "^4.17.1",
     "express-serve-static-core": "latest",
     "http-status-codes": "latest",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "latest"
   },
   "devDependencies": {
